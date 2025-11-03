@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tombol Lucu dengan Efek Kupu-Kupu & Pita</title>
+  <style>
+    /* 🌸 Background lembut */
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #ffe4ec, #ffd1dc, #fff0f5);
+      padding: 50px;
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* 🦋 Kupu-kupu beterbangan */
+    .butterfly {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png');
+      background-size: cover;
+      opacity: 0.8;
+      animation: fly 14s linear infinite;
+      z-index: 0;
+    }
+    @keyframes fly {
+      0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0.7; }
+      50% { transform: translateY(50vh) translateX(25vw) rotate(180deg); opacity: 1; }
+      100% { transform: translateY(-10vh) translateX(-20vw) rotate(360deg); opacity: 0.7; }
+    }
+
+    /* 🎀 Pita statis di latar */
+    .ribbon {
+      position: fixed;
+      width: 100px;
+      height: 100px;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/3209/3209961.png');
+      background-size: cover;
+      opacity: 0.4;
+      z-index: 0;
+    }
+    .ribbon.left { top: 20px; left: 30px; transform: rotate(-15deg); }
+    .ribbon.right { top: 20px; right: 30px; transform: rotate(15deg); }
+
+    /* ✨ Tombol efek lembut */
+    button {
+      font-size: 20px;
+      padding: 12px 25px;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      margin: 15px;
+      transition: all 0.3s ease;
+      background: linear-gradient(45deg, #ff7eb3, #ff758c);
+      box-shadow: 0 0 15px rgba(255, 118, 172, 0.6);
+      animation: fadeBounce 0.8s ease;
+      position: relative;
+      z-index: 1;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #ff8fa3, #ffc2d1);
+      transform: scale(1.1) rotate(2deg);
+      box-shadow: 0 0 25px rgba(255, 182, 193, 0.9);
+    }
+
+    @keyframes fadeBounce {
+      0% { opacity: 0; transform: scale(0.5); }
+      60% { opacity: 1; transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* ✨ Efek flash putih lembut */
+    #flash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: white;
+      opacity: 0;
+      transition: opacity 0.15s;
+      pointer-events: none;
+      z-index: 10;
+    }
+    #flash.show { opacity: 0.7; }
+
+    /* Gaya gambar dan caption */
+    .photoContainer {
+      margin: 60px 0;
+      position: relative;
+      z-index: 1;
+    }
+    .prankImage {
+      display: none;
+      opacity: 0;
+      transform: scale(0.1);
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+      margin: 20px auto 10px auto;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      width: 300px;
+    }
+    .prankImage.show {
+      display: block;
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    .caption {
+      font-size: 20px;
+      color: #333;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      background-color: rgba(255,255,255,0.6);
+      display: inline-block;
+      padding: 10px 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* 💗 Footer */
+    footer {
+      margin-top: 80px;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      color: #333;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      backdrop-filter: blur(6px);
+      position: relative;
+      z-index: 1;
+    }
+    .social-links a {
+      color: #d81b60;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .social-links a:hover {
+      color: #ff4081;
+      transform: scale(1.1);
+    }
+    .copyright {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <!-- 🦋 Kupu-kupu terbang -->
+  <div class="butterfly" style="left: 10%; animation-delay: 0s;"></div>
+  <div class="butterfly" style="left: 50%; animation-delay: 5s;"></div>
+  <div class="butterfly" style="left: 80%; animation-delay: 10s;"></div>
+
+  <!-- 🎀 Pita -->
+  <div class="ribbon left"></div>
+  <div class="ribbon right"></div>
+
+  <h1> SELAMAT DATANG DI WEBSITE MISTERY 🤫</h1>
+  <p> JANGAN DI BUKA NANTI BISA MEMBUAT AMARAH</p>
+  <button id="prankButton" onclick="showPrank(0)">YAKIN MAU PENCET?</button>
+
+  <div id="flash"></div>
+  <div id="photoContainer"></div>
+
+  <!-- Suara efek lembut -->
+  <audio id="sound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+
+  <script>
+    const photos = [
+      { src: "ami.jpeg", caption: " PENAMPAKAN UYUY AMINAH " },
+      { src: "ama.jpeg", caption: " PENAMPAKAN UYUY AMANAH" },
+      { src: "akur.jpeg", caption: " SESAMA KEMBAR HARUS AKUR" }
+    ];
+
+    function showPrank(index) {
+      const flash = document.getElementById("flash");
+      const sound = document.getElementById("sound");
+      const container = document.getElementById("photoContainer");
+
+      // Efek flash + suara lembut
+      flash.classList.add("show");
+      setTimeout(() => flash.classList.remove("show"), 200);
+      try { sound.currentTime = 0; sound.play(); } catch(e) {}
+
+      // Hapus tombol lama
+      const oldButtons = container.querySelectorAll("button");
+      oldButtons.forEach(btn => btn.style.display = "none");
+
+      // Buat kontainer foto
+      const photoDiv = document.createElement("div");
+      photoDiv.className = "photoContainer";
+
+      const img = document.createElement("img");
+      img.src = photos[index].src;
+      img.className = "prankImage";
+
+      const caption = document.createElement("p");
+      caption.className = "caption";
+      caption.textContent = photos[index].caption;
+
+      photoDiv.appendChild(img);
+      photoDiv.appendChild(caption);
+
+      // Foto ke-2 hanya ada tombol khusus (1 saja)
+      if (index === 1) {
+        const specialBtn = document.createElement("button");
+        specialBtn.textContent = " SERIUSS MASIH PENASARAN?? ";
+        specialBtn.onclick = () => showPrank(2);
+        photoDiv.appendChild(specialBtn);
+      }
+      // Selain itu (foto 1 & 2), tombol lanjut biasa
+      else if (index < photos.length - 1) {
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = `YAKIN MASIH MAU KE ${index + 2}`;
+        nextBtn.onclick = () => showPrank(index + 1);
+        photoDiv.appendChild(nextBtn);
+      }
+
+      container.appendChild(photoDiv);
+
+      // Animasi gambar muncul
+      setTimeout(() => img.classList.add("show"), 100);
+    }
+  </script>
+
+  <!-- Footer -->
+  <footer>
+    <div class="social-links">
+      <a href="https://instagram.com/rcasyaa_" target="_blank">📸 Profil Instagram</a>
+    </div>
+    <div class="copyright">
+      © Copyright By Rasya 2025
+    </div>
+  </footer>
+</body>
+</html>
